@@ -4,7 +4,7 @@ import com.example.validphonecheck.service.PhoneService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/valid")
 public class ValidController {
 
     private final PhoneService phoneService;
@@ -13,8 +13,13 @@ public class ValidController {
         this.phoneService = phoneService;
     }
 
-    @GetMapping("/valid-phone/{phone}")
-    public String validate(@PathVariable String phone) {
+    @GetMapping("/phone/{phone}")
+    public Boolean validate(@PathVariable String phone) {
         return phoneService.checkPhoneIsValid(phone);
+    }
+
+    @GetMapping("/iban/{iban}")
+    public Boolean validateIban(@PathVariable String iban){
+        return phoneService.checkIbanValid(iban);
     }
 }

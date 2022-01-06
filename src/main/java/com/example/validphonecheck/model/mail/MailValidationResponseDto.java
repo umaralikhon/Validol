@@ -1,11 +1,11 @@
-package com.example.validphonecheck.Model;
+package com.example.validphonecheck.model.mail;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ValidationResponseDto {
-    private String phone;
+public class MailValidationResponseDto {
+    private String mail;
     private Boolean valid;
 }
