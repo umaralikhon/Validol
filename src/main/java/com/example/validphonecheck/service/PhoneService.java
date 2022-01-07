@@ -4,34 +4,26 @@ import com.example.validphonecheck.model.iban.IbanResponseDto;
 import com.example.validphonecheck.model.phone.PhoneValidationResponseDto;
 import com.example.validphonecheck.repository.IbanResponseRepo;
 import com.example.validphonecheck.repository.PhoneResponseRepo;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@Slf4j
 public class PhoneService {
     private final ConnectService connectService;
     private final PhoneResponseRepo phoneResponseRepo;
     private final IbanResponseRepo ibanRepository;
-
-    @Autowired
-    public PhoneService(
-            ConnectService connectService,
-            PhoneResponseRepo phoneResponseRepo,
-            IbanResponseRepo ibanRepository) {
-
-        this.connectService = connectService;
-        this.phoneResponseRepo = phoneResponseRepo;
-        this.ibanRepository = ibanRepository;
-    }
+    private final IdentityCheck identityCheck;
 
     public Boolean checkPhoneIsValid(String phone) {
         ResponseEntity<PhoneValidationResponseDto> response = connectService.connect(phone);
 
         if (response.getBody().getValid()) {
-            if(checkForPhoneIdentity(phone) == false) {
+            if(identityCheck.checkForPhoneIdentity(phone) == false) {
                 try {
                     phoneResponseRepo.save(response.getBody());
                 } catch (Exception ex) {
@@ -44,23 +36,11 @@ public class PhoneService {
         }
     }
 
-    public Boolean checkForPhoneIdentity(String phone){
-        List<PhoneValidationResponseDto> phoneList = phoneResponseRepo.findAll();
-        Boolean isExist = false;
-
-        for(PhoneValidationResponseDto p: phoneList){
-            if(p.getPhone().equals(phone)){
-                isExist = true;
-            }
-        }
-        return isExist;
-    }
-
     public Boolean checkIbanValid(String iban) {
         ResponseEntity<IbanResponseDto> ibanResponse = connectService.connectToIban(iban);
 
         if (ibanResponse.getBody().getIsValid()) {
-            if (checkForIbanIdentity(iban) == false) {
+            if (identityCheck.checkForIbanIdentity(iban) == false) {
                 try {
                     ibanRepository.save(ibanResponse.getBody());
                 } catch (Exception ex) {
@@ -73,16 +53,6 @@ public class PhoneService {
         }
     }
 
-    public Boolean checkForIbanIdentity(String iban){
-        List<IbanResponseDto> ibanList = ibanRepository.findAll();
-        Boolean isExist = false;
 
-        for(IbanResponseDto i : ibanList){
-            if(i.getIban().equals(iban)){
-                isExist = true;
-            }
-        }
-        return isExist;
-    }
 
 }

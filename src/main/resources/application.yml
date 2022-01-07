@@ -10,3 +10,12 @@ spring:
     generate-ddl: on
     hibernate:
       ddl-auto: update
+
+logging:
+  level:
+    - error
+    - warn
+  file:
+    name: MyLog.txt
+
+

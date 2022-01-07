@@ -2,14 +2,15 @@ package com.example.validphonecheck.model.phone;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "phone")
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Slf4j
 public class PhoneValidationResponseDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

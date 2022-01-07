@@ -2,6 +2,7 @@ package com.example.validphonecheck.service;
 
 import com.example.validphonecheck.model.iban.IbanResponseDto;
 import com.example.validphonecheck.model.phone.PhoneValidationResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@Slf4j
 public class ConnectService {
 
     private final RestTemplate restTemplate;
